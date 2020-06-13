@@ -21,7 +21,7 @@ def start_game(repo: GameRepo = Depends()) -> GameSchema:
     return new_game
 
 
-@router.post("/{game_id}/pick_slot", response_model=GameSchema)
+@router.post("/{game_id}/pick-slot", response_model=GameSchema)
 def pick_slot(
     game_id: str, pick: PickSlotSchema, repo: GameRepo = Depends()
 ) -> GameSchema:

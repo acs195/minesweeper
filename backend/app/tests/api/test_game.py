@@ -19,7 +19,7 @@ def test_game_start(test_client):
 def test_game_pick_slot(test_client, game):
     """Test to pick a slot in the game"""
     slot = {'x': 1, 'y': 1}
-    response = test_client.post(f"/api/v1/games/{game.id}/pick_slot", json=slot)
+    response = test_client.post(f"/api/v1/games/{game.id}/pick-slot", json=slot)
     assert response.status_code == 200
     game = response.json()
     for field in ["id", "board"]:
@@ -32,6 +32,6 @@ def test_game_pick_slot_already_picked(test_client, game):
     """Test to pick a slot already picked in the game"""
     game.board.slots[1][1].available = False
     slot = {'x': 1, 'y': 1}
-    response = test_client.post(f"/api/v1/games/{game.id}/pick_slot", json=slot)
+    response = test_client.post(f"/api/v1/games/{game.id}/pick-slot", json=slot)
     assert response.status_code == 400
     assert response.json()['detail'] == f"Cannot pick slot {slot['x']}x{slot['y']}"
