@@ -1,18 +1,20 @@
 # This is for Google App Engine
 runtime: python37
 instance_class: F1
-entrypoint: gunicorn --chdir app main:app \
+automatic_scaling:
+  min_instances: 1
+  max_instances: 1
+entrypoint: >
+  gunicorn --chdir app main:app
+  --workers 1
+  --worker-class uvicorn.workers.UvicornWorker
   --log-level $LOG_LEVEL
-  --bind :$PORT \
-  --workers 1 \
-  --timeout 120 \
-  --graceful-timeout 120 \
-  --keep-alive 5 \
-  --error-logfile - \
-  -k uvicorn.workers.UvicornWorker
+  --bind :$PORT
+  --timeout 120
+  --graceful-timeout 120
+  --keep-alive 5
+  --error-logfile -
 
 env_variables:
   APP_ENVIRONMENT: development
-  HOST: 0.0.0.0
-  PORT: 5000
   LOG_LEVEL: INFO

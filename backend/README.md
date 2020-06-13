@@ -17,3 +17,15 @@ python app/main.py
 ```
 pytest -v
 ```
+
+---
+
+## Deploy to Google App Engine
+```
+gcloud app deploy
+```
+
+It is hosted on: https://cloudaleapi.ue.r.appspot.com
+
+### API Documentation
+https://cloudaleapi.ue.r.appspot.com/docs
