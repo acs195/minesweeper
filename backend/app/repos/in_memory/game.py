@@ -8,14 +8,14 @@ class GameRepo(BaseRepo):
 
     MODEL = "games"
 
-    def get(self, id):
+    def get(self, id: str):
         """Get a game by id"""
         return super().get(self.MODEL, id)
 
     def add(self, item):
         """Create and return a game"""
-        return super().add(self.MODEL, item)
+        super().add(self.MODEL, item)
 
-    def delete(self, id):
+    def delete(self, id: str):
         """Delete a game by id"""
         super().get(self.MODEL, id)

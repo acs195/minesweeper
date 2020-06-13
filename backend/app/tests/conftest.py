@@ -17,7 +17,6 @@ class FakeRepo:
     def add(self, model, item):
         new = {model: {item.id: item}}
         self.datastore.update(new)
-        return new
 
     def remove(self, model, item):
         del self.datastore[model][item.id]
@@ -29,7 +28,7 @@ class FakeGameRepo(FakeRepo):
         return super().get("games", id)
 
     def add(self, item):
-        return super().add("games", item)
+        super().add("games", item)
 
     def remove(self, item):
         super().remove("games", item)

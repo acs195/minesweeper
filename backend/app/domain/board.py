@@ -1,10 +1,12 @@
 """This is the domain model module for board"""
 
-from uuid import uuid4
 from random import randrange
-from typing import Optional, List
+from typing import List, Optional
+from uuid import uuid4
+
 from pydantic import BaseModel, validator
 
+from schemas.board import PickSlotSchema
 from utils.exceptions import InvalidAmountOfMines, SlotAlreadyPicked
 
 
@@ -38,7 +40,7 @@ class Board(BaseModel):
     def auto_generate_id(cls, v):
         return v or str(uuid4())
 
-    def _max_mines(self):
+    def _max_mines(self) -> int:
         """Return the max number of mines to be placed in the board"""
         return self.rows * self.cols - 1
 
@@ -68,7 +70,7 @@ class Board(BaseModel):
                 slot.place_mine()
                 mines_placed += 1
 
-    def pick_slot(self, pick):
+    def pick_slot(self, pick: PickSlotSchema) -> None:
         """Pick a slot in the board"""
         slot = self.slots[pick.x][pick.y]
         if not slot.available:

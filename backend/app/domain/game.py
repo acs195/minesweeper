@@ -13,21 +13,6 @@ DEFAULT_BOARD_ROWS = 8
 DEFAULT_BOARD_COLS = 8
 
 
-class GameFactory:
-    """This class is used to instanciate a game"""
-
-    def __init__(self, repo):
-        self.repo = repo
-
-    def start(self, player):
-        """Prepare the board and start the game"""
-        board = Board(rows=DEFAULT_BOARD_ROWS, cols=DEFAULT_BOARD_ROWS)
-        board.set_mines(mines=DEFAULT_MINES)
-        game = Game(player=player, board=board)
-        self.repo.add(game)
-        return game
-
-
 class Game(BaseModel):
     """This class represents a game"""
 
@@ -42,3 +27,18 @@ class Game(BaseModel):
     def pick_slot(self, pick):
         """Pick a slot in the board"""
         self.board.pick_slot(pick)
+
+
+class GameFactory:
+    """This class is used to instanciate a game"""
+
+    def __init__(self, repo):
+        self.repo = repo
+
+    def start(self, player: Player) -> Game:
+        """Prepare the board and start the game"""
+        board = Board(rows=DEFAULT_BOARD_ROWS, cols=DEFAULT_BOARD_ROWS)
+        board.set_mines(mines=DEFAULT_MINES)
+        game = Game(player=player, board=board)
+        self.repo.add(game)
+        return game
