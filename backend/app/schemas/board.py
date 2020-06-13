@@ -11,6 +11,13 @@ class SlotSchema(BaseModel):
     mine: bool
 
 
+class PickSlotSchema(BaseModel):
+    """This is the schema for picking a slot"""
+
+    x: int
+    y: int
+
+
 class BoardSchema(BaseModel):
     """This is the list schema"""
 

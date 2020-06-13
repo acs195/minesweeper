@@ -5,7 +5,7 @@ from random import randrange
 from typing import Optional, List
 from pydantic import BaseModel, validator
 
-from utils.exceptions import InvalidAmountOfMines
+from utils.exceptions import InvalidAmountOfMines, SlotAlreadyPicked
 
 
 class Slot(BaseModel):
@@ -16,6 +16,9 @@ class Slot(BaseModel):
 
     def place_mine(self) -> None:
         self.mine = True
+
+    def pick(self):
+        self.available = False
 
 
 class Board(BaseModel):
@@ -36,9 +39,11 @@ class Board(BaseModel):
         return v or str(uuid4())
 
     def _max_mines(self):
+        """Return the max number of mines to be placed in the board"""
         return self.rows * self.cols - 1
 
     def _initiate_slots(self) -> list:
+        """Create an empty 2D array of slots (rows x cols)"""
         slots = []
         for x in range(self.rows):
             row = []
@@ -49,6 +54,7 @@ class Board(BaseModel):
         return slots
 
     def set_mines(self, mines: int) -> None:
+        """Place mines in the board to start a new game"""
         if mines > self._max_mines():
             raise InvalidAmountOfMines(mines)
 
@@ -61,3 +67,10 @@ class Board(BaseModel):
             if not slot.mine:
                 slot.place_mine()
                 mines_placed += 1
+
+    def pick_slot(self, pick):
+        """Pick a slot in the board"""
+        slot = self.slots[pick.x][pick.y]
+        if not slot.available:
+            raise SlotAlreadyPicked(pick)
+        slot.pick()

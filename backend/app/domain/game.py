@@ -20,6 +20,7 @@ class GameFactory:
         self.repo = repo
 
     def start(self, player):
+        """Prepare the board and start the game"""
         board = Board(rows=DEFAULT_BOARD_ROWS, cols=DEFAULT_BOARD_ROWS)
         board.set_mines(mines=DEFAULT_MINES)
         game = Game(player=player, board=board)
@@ -37,3 +38,7 @@ class Game(BaseModel):
     @validator("id", always=True)
     def auto_generate_id(cls, v):
         return v or str(uuid4())
+
+    def pick_slot(self, pick):
+        """Pick a slot in the board"""
+        self.board.pick_slot(pick)
