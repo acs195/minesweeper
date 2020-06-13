@@ -2,15 +2,13 @@
 
 
 from pydantic import BaseModel
+from schemas.board import BoardSchema
+from schemas.player import PlayerSchema
 
 
 class GameSchema(BaseModel):
     """This is the list schema"""
 
     id: str
-
-
-class GameCreateSchema(BaseModel):
-    """This is the create schema"""
-
-    pass
+    board: BoardSchema
+    player: PlayerSchema

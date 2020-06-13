@@ -5,17 +5,14 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 from api.api_v1.api import api_router
-from core.config import AppEnvironmentEnum, get_settings
+from core.config import get_settings
 
 settings = get_settings()
-
-openapi_url = f"{settings.API_V1_STR}/openapi.json"
-if settings.APP_ENVIRONMENT == AppEnvironmentEnum.production:
-    openapi_url = ""
 
 
 def create_app() -> FastAPI:
     """App factory"""
+    openapi_url = f"{settings.API_V1_STR}/openapi.json"
     app = FastAPI(title=settings.PROJECT_NAME, openapi_url=openapi_url)
 
     app.add_middleware(
