@@ -105,3 +105,4 @@ dmypy.json
 # Custom
 .vscode
 venv/
+node_modules
