@@ -13,6 +13,8 @@ from utils.exceptions import InvalidAmountOfMines, SlotAlreadyPicked
 class Slot(BaseModel):
     """This class represents a slot in the board"""
 
+    x: int
+    y: int
     mine: bool
     available: bool
 
@@ -50,10 +52,14 @@ class Board(BaseModel):
         for x in range(self.rows):
             row = []
             for y in range(self.cols):
-                slot = Slot(mine=False, available=True)
+                slot = Slot(x=x, y=y, mine=False, available=True)
                 row.append(slot)
             slots.append(row)
         return slots
+
+    def reset(self) -> None:
+        self.slots = self._initiate_slots()
+        self.set_mines(self.mines)
 
     def set_mines(self, mines: int) -> None:
         """Place mines in the board to start a new game"""
@@ -76,3 +82,65 @@ class Board(BaseModel):
         if not slot.available:
             raise SlotAlreadyPicked(pick)
         slot.pick()
+        if not slot.mine:
+            self._clear_adjacent_slots(pick)
+
+    def _clear_adjacent_slots(self, pick):
+        """Clear adjacent slots when there is no mine around"""
+        available_adjacent_slots = self._get_available_adjacent_slots(pick)
+        are_mines = any([slot.mine for slot in available_adjacent_slots])
+
+        while len(available_adjacent_slots) > 0 and not are_mines:
+            for slot in available_adjacent_slots:
+                slot.pick()
+                new_pick = PickSlotSchema(x=slot.x, y=slot.y)
+                self._clear_adjacent_slots(new_pick)
+
+            available_adjacent_slots = self._get_available_adjacent_slots(pick)
+            are_mines = any([slot.mine for slot in available_adjacent_slots])
+
+    def _get_available_adjacent_slots(self, pick):
+        """Get a list of all available adjacent slot of a pick"""
+        adjacent_slots = []
+        # West
+        if pick.x - 1 >= 0:
+            slot = self.slots[pick.x-1][pick.y]
+            if slot.available:
+                adjacent_slots.append(slot)
+        # North-West
+        if pick.x - 1 >= 0 and pick.y - 1 >= 0:
+            slot = self.slots[pick.x-1][pick.y-1]
+            if slot.available:
+                adjacent_slots.append(slot)
+        # North
+        if pick.y - 1 >= 0:
+            slot = self.slots[pick.x][pick.y-1]
+            if slot.available:
+                adjacent_slots.append(slot)
+        # North-East
+        if pick.x + 1 < self.cols and pick.y - 1 >= 0:
+            slot = self.slots[pick.x+1][pick.y-1]
+            if slot.available:
+                adjacent_slots.append(slot)
+        # East
+        if pick.x + 1 < self.cols:
+            slot = self.slots[pick.x+1][pick.y]
+            if slot.available:
+                adjacent_slots.append(slot)
+        # South-East
+        if pick.x + 1 < self.cols and pick.y + 1 < self.rows:
+            slot = self.slots[pick.x+1][pick.y+1]
+            if slot.available:
+                adjacent_slots.append(slot)
+        # South
+        if pick.y + 1 < self.rows:
+            slot = self.slots[pick.x][pick.y+1]
+            if slot.available:
+                adjacent_slots.append(slot)
+        # South-West
+        if pick.x - 1 >= 0 and pick.y + 1 < self.rows:
+            slot = self.slots[pick.x-1][pick.y+1]
+            if slot.available:
+                adjacent_slots.append(slot)
+
+        return adjacent_slots

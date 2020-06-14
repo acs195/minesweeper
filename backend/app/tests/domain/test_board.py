@@ -1,11 +1,12 @@
 from domain.board import Board, Slot
+from schemas.board import PickSlotSchema
 
 
 def test_new_slot():
     """Test to create a new slot"""
     mine = False
     available = True
-    slot = Slot(mine=mine, available=available)
+    slot = Slot(mine=mine, available=available, x=1, y=1)
     assert slot.mine == mine
     assert slot.available == available
 
@@ -31,3 +32,27 @@ def test_board_set_mines():
             if slot.mine:
                 count_mines += 1
     assert count_mines == mines
+
+
+def test_board_pick_slot_clear_adjacent(game):
+    """Test to pick a slot in a board"""
+    x, y = 4, 1
+    pick = PickSlotSchema(x=x, y=y)
+    picked_slot = game.board.slots[x][y]
+
+    assert picked_slot.available is True
+    game.pick_slot(pick)
+
+    expected_result_after_clear = [
+        [False, False, True, True, True, True, True, True],
+        [False, False, True, True, True, True, True, True],
+        [False, False, False, False, True, True, True, True],
+        [False, False, False, False, True, True, True, True],
+        [False, False, False, False, False, False, True, True],
+        [False, False, False, False, False, False, True, True],
+        [False, False, False, False, False, False, True, True],
+        [False, False, True, True, True, True, True, True],
+    ]
+    for x, row in enumerate(game.board.slots):
+        for y, slot in enumerate(row):
+            assert slot.available is expected_result_after_clear[x][y]

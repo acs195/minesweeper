@@ -58,16 +58,14 @@ def game(fake_game_repo):
         (3, 4),
         (3, 6),
         (5, 6),
-        (5, 8),
+        (5, 7),
         (7, 2),
         (7, 4),
-        (8, 1),
-        (8, 8),
     ]
     for row_idx, row in enumerate(game.board.slots):
         for col_idx, slot in enumerate(row):
             if (row_idx, col_idx) in mines:
                 slot.mine = True
             else:
-                slot.mine = True
+                slot.mine = False
     return game

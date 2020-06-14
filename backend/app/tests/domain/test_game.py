@@ -18,8 +18,7 @@ def test_new_game(fake_game_repo):
 
 def test_game_pick_slot(game):
     """Test to pick a slot during the game"""
-    x = 2
-    y = 3
+    x, y = 2, 3
     pick = PickSlotSchema(x=x, y=y)
     picked_slot = game.board.slots[x][y]
 
@@ -30,8 +29,7 @@ def test_game_pick_slot(game):
 
 def test_pick_slot_already_picked(game):
     """Test to pick a slot already picked during the game"""
-    x = 2
-    y = 3
+    x, y = 2, 3
     pick = PickSlotSchema(x=x, y=y)
     picked_slot = game.board.slots[x][y]
 

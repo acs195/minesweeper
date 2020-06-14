@@ -11,6 +11,12 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [0.3.0] - 2020-06-14
+### Added
+- Reveal adjacent slots when there is no mine around
+
+---
+
 ## [0.2.0] - 2020-06-14
 ### Added
 - Add client library for the backend api

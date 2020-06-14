@@ -28,6 +28,30 @@ class Game(BaseModel):
         """Pick a slot in the board"""
         self.board.pick_slot(pick)
 
+    @property
+    def visual_board(self):
+        """Return a visual representation of the board
+        Symbols:
+            ~ indicates the slot is available and there is a mine behind it
+            · indicates the slot is available and clear
+            X indicates a picked mine (game over)
+              (empty) indicates the slot was already picked (no mine)
+        """
+        visual_repr = "   " + " ".join([str(i) for i in range(self.board.cols)])
+        for i, row in enumerate(self.board.slots):
+            line = f'{i} '
+            for slot in row:
+                if slot.available and slot.mine:
+                    line += ' ~'
+                elif slot.available and not slot.mine:
+                    line += ' ·'
+                elif not slot.available and slot.mine:
+                    line += ' X'
+                elif not slot.available and not slot.mine:
+                    line += '  '
+            visual_repr += f"\n{line}"
+        return visual_repr
+
 
 class GameFactory:
     """This class is used to instanciate a game"""
