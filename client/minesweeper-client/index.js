@@ -29,11 +29,17 @@ class MineSweeperClient {
     let url = "/games/start"
     let options = { method: "POST" }
     let response = await this.request(url, options)
-    this.game = await response.json()
-    if (this.debug) {
-      this.printBoard()
+    if (response.ok) {
+      this.game = await response.json()
+      if (this.debug) {
+        this.printBoard()
+      }
+      return this.game
+    } else {
+      let error = await response.json()
+      console.log(error)
+      return error
     }
-    return this.game
   }
 
   async pickSlot(gameId, pick) {
@@ -43,21 +49,31 @@ class MineSweeperClient {
       body: JSON.stringify(pick)
     }
     let response = await this.request("/games/" + gameId + "/pick-slot", options)
-    this.game = await response.json()
-    if (this.debug) {
-      this.printBoard()
+    if (response.ok) {
+      this.game = await response.json()
+      if (this.debug) {
+        this.printBoard()
+      }
+      return this.game
+    } else {
+      let error = await response.json()
+      console.log(error)
+      return error
     }
-    return this.game
   }
 
   printBoard() {
     // Print board in console
     console.log(' ')
+    let header = '   ' + [...Array(this.game.board.slots[0].length).keys()].join(' ')
+    console.log(header)
     for (let i = 0; i < this.game.board.slots.length; i++) {
-      let row = ''
+      let row = i + ' '
       for (let j = 0; j < this.game.board.slots[i].length; j++) {
         let slot = this.game.board.slots[i][j]
-        if (slot.available) {
+        if (slot.available && slot.mine) {
+          row += ' ~'
+        } else if (slot.available && !slot.mine) {
           row += ' ·'
         } else if (!slot.available && slot.mine) {
           row += ' X'
