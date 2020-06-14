@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 ## [0.3.0] - 2020-06-14
 ### Added
 - Reveal adjacent slots when there is no mine around
+- Add ability to print board for debugging purposes
 
 ---
 
