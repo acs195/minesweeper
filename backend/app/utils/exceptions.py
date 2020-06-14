@@ -15,3 +15,11 @@ class SlotAlreadyPicked(Exception):
     def __init__(self, pick):
         message = f"Cannot pick slot {pick.x}x{pick.y}"
         super().__init__(message)
+
+
+class GameIsOver(Exception):
+    """Exception when game is over"""
+
+    def __init__(self):
+        message = "Game is over"
+        super().__init__(message)

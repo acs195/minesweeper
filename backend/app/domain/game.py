@@ -2,9 +2,11 @@
 
 from typing import Optional
 from uuid import uuid4
+from enum import Enum
 
 from pydantic import BaseModel, validator
 
+from utils.exceptions import GameIsOver
 from domain.board import Board
 from domain.player import Player
 
@@ -13,12 +15,21 @@ DEFAULT_BOARD_ROWS = 8
 DEFAULT_BOARD_COLS = 8
 
 
+class GameStatusEnum(Enum):
+    """Game status"""
+
+    ongoing = 1
+    won = 2
+    lost = 3
+
+
 class Game(BaseModel):
     """This class represents a game"""
 
     id: Optional[str]
     player: Player
     board: Board
+    status: GameStatusEnum = GameStatusEnum.ongoing
 
     @validator("id", always=True)
     def auto_generate_id(cls, v):
@@ -26,11 +37,25 @@ class Game(BaseModel):
 
     def pick_slot(self, pick):
         """Pick a slot in the board"""
-        self.board.pick_slot(pick)
+        if self.game_over:
+            raise GameIsOver()
+
+        slot = self.board.pick_slot(pick)
+        if slot.mine:
+            self.status = GameStatusEnum.lost
+        else:
+            self._check_for_win()
 
     def toggle_flag_slot(self, pick):
         """Flag a slot in the board"""
+        if self.game_over:
+            raise GameIsOver()
+
         self.board.toggle_flag_slot(pick)
+
+    @property
+    def game_over(self):
+        return self.status in (GameStatusEnum.won, GameStatusEnum.lost)
 
     @property
     def visual_board(self):
@@ -44,20 +69,28 @@ class Game(BaseModel):
         """
         visual_repr = "   " + " ".join([str(i) for i in range(self.board.cols)])
         for i, row in enumerate(self.board.slots):
-            line = f'{i} '
+            line = f"{i} "
             for slot in row:
                 if slot.flag:
-                    line += ' !'
+                    line += " !"
                 elif slot.available and slot.mine:
-                    line += ' ~'
+                    line += " ~"
                 elif slot.available and not slot.mine:
-                    line += ' ·'
+                    line += " ·"
                 elif not slot.available and slot.mine:
-                    line += ' X'
+                    line += " X"
                 elif not slot.available and not slot.mine:
-                    line += '  '
+                    line += "  "
             visual_repr += f"\n{line}"
         return visual_repr
+
+    def _check_for_win(self):
+        """Check if won the game"""
+        slots_available = any(
+            [slot.available for slot in self.board.iter_slots() if not slot.mine]
+        )
+        if not slots_available:
+            self.status = GameStatusEnum.won
 
 
 class GameFactory:

@@ -23,7 +23,6 @@ class FakeRepo:
 
 
 class FakeGameRepo(FakeRepo):
-
     def get(self, id):
         return super().get("games", id)
 

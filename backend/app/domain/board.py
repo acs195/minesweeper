@@ -80,14 +80,17 @@ class Board(BaseModel):
                 slot.place_mine()
                 mines_placed += 1
 
-    def pick_slot(self, pick: PickSlotSchema) -> None:
+    def pick_slot(self, pick: PickSlotSchema) -> Slot:
         """Pick a slot in the board"""
         slot = self.slots[pick.x][pick.y]
         if not slot.available:
             raise SlotAlreadyPicked(pick)
+
         slot.pick()
         if not slot.mine:
             self._clear_adjacent_slots(pick)
+
+        return slot
 
     def _clear_adjacent_slots(self, pick):
         """Clear adjacent slots when there is no mine around"""
@@ -108,42 +111,42 @@ class Board(BaseModel):
         adjacent_slots = []
         # West
         if pick.x - 1 >= 0:
-            slot = self.slots[pick.x-1][pick.y]
+            slot = self.slots[pick.x - 1][pick.y]
             if slot.available:
                 adjacent_slots.append(slot)
         # North-West
         if pick.x - 1 >= 0 and pick.y - 1 >= 0:
-            slot = self.slots[pick.x-1][pick.y-1]
+            slot = self.slots[pick.x - 1][pick.y - 1]
             if slot.available:
                 adjacent_slots.append(slot)
         # North
         if pick.y - 1 >= 0:
-            slot = self.slots[pick.x][pick.y-1]
+            slot = self.slots[pick.x][pick.y - 1]
             if slot.available:
                 adjacent_slots.append(slot)
         # North-East
         if pick.x + 1 < self.cols and pick.y - 1 >= 0:
-            slot = self.slots[pick.x+1][pick.y-1]
+            slot = self.slots[pick.x + 1][pick.y - 1]
             if slot.available:
                 adjacent_slots.append(slot)
         # East
         if pick.x + 1 < self.cols:
-            slot = self.slots[pick.x+1][pick.y]
+            slot = self.slots[pick.x + 1][pick.y]
             if slot.available:
                 adjacent_slots.append(slot)
         # South-East
         if pick.x + 1 < self.cols and pick.y + 1 < self.rows:
-            slot = self.slots[pick.x+1][pick.y+1]
+            slot = self.slots[pick.x + 1][pick.y + 1]
             if slot.available:
                 adjacent_slots.append(slot)
         # South
         if pick.y + 1 < self.rows:
-            slot = self.slots[pick.x][pick.y+1]
+            slot = self.slots[pick.x][pick.y + 1]
             if slot.available:
                 adjacent_slots.append(slot)
         # South-West
         if pick.x - 1 >= 0 and pick.y + 1 < self.rows:
-            slot = self.slots[pick.x-1][pick.y+1]
+            slot = self.slots[pick.x - 1][pick.y + 1]
             if slot.available:
                 adjacent_slots.append(slot)
 
@@ -154,4 +157,11 @@ class Board(BaseModel):
         slot = self.slots[pick.x][pick.y]
         if not slot.available:
             raise SlotAlreadyPicked(pick)
+
         slot.toggle_flag()
+
+    def iter_slots(self):
+        """Iterate over the slots as it was a 1D list"""
+        for row in self.slots:
+            for slot in row:
+                yield slot

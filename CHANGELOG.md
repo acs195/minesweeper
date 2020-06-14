@@ -11,6 +11,12 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [0.5.0] - 2020-06-14
+### Added
+- Detect when game is over (loss and win)
+
+---
+
 ## [0.4.0] - 2020-06-14
 ### Added
 - Allow to flag a slot

@@ -7,7 +7,7 @@ from domain.player import AnonymousPlayer
 from repos.in_memory.game import GameRepo
 from schemas.board import PickSlotSchema
 from schemas.game import GameSchema
-from utils.exceptions import SlotAlreadyPicked
+from utils.exceptions import SlotAlreadyPicked, GameIsOver
 
 router = APIRouter()
 
@@ -30,7 +30,7 @@ def pick_slot(
     try:
         game.pick_slot(pick)
         return game
-    except SlotAlreadyPicked as e:
+    except (SlotAlreadyPicked, GameIsOver) as e:
         raise HTTPException(status_code=400, detail=e.args[0])
 
 
@@ -43,5 +43,5 @@ def toggle_flag_slot(
     try:
         game.toggle_flag_slot(pick)
         return game
-    except SlotAlreadyPicked as e:
+    except (SlotAlreadyPicked, GameIsOver) as e:
         raise HTTPException(status_code=400, detail=e.args[0])

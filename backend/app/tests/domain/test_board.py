@@ -59,7 +59,7 @@ def test_board_pick_slot_clear_adjacent(game):
 
 
 def test_board_toggle_flag_slot(game):
-    """Test to set mines in a board"""
+    """Test to toggle a flag in the board"""
     x, y = 7, 7
     flag_slot = PickSlotSchema(x=x, y=y)
     assert game.board.slots[x][y].flag is False
@@ -67,3 +67,12 @@ def test_board_toggle_flag_slot(game):
     assert game.board.slots[x][y].flag is True
     game.board.toggle_flag_slot(flag_slot)
     assert game.board.slots[x][y].flag is False
+
+
+def test_board_iter_slots(game):
+    """Test to iterate over the slots as it was a 1D list"""
+    count = 0
+    for _ in game.board.iter_slots():
+        count += 1
+
+    assert game.board.rows * game.board.cols == count
