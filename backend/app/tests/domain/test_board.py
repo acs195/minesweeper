@@ -56,3 +56,14 @@ def test_board_pick_slot_clear_adjacent(game):
     for x, row in enumerate(game.board.slots):
         for y, slot in enumerate(row):
             assert slot.available is expected_result_after_clear[x][y]
+
+
+def test_board_toggle_flag_slot(game):
+    """Test to set mines in a board"""
+    x, y = 7, 7
+    flag_slot = PickSlotSchema(x=x, y=y)
+    assert game.board.slots[x][y].flag is False
+    game.board.toggle_flag_slot(flag_slot)
+    assert game.board.slots[x][y].flag is True
+    game.board.toggle_flag_slot(flag_slot)
+    assert game.board.slots[x][y].flag is False

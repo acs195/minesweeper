@@ -8,273 +8,337 @@ module.exports = {
         [
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           }
         ],
         [
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: true
+            mine: true,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           }
         ],
         [
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: true
+            mine: true,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: true
+            mine: true,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           }
         ],
         [
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: true
+            mine: true,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           }
         ],
         [
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           }
         ],
         [
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           }
         ],
         [
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: true
+            mine: true,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           }
         ],
         [
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: true
+            mine: true,
+            flag: false
           },
           {
             available: true,
-            mine: true
+            mine: true,
+            flag: false
           },
           {
             available: true,
-            mine: true
+            mine: true,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
             available: true,
-            mine: false
+            mine: false,
+            flag: false
           },
           {
-            available: true,
-            mine: false
+            available: false,
+            mine: false,
+            flag: false
           }
         ]
       ],

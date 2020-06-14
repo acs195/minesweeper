@@ -9,6 +9,7 @@ class SlotSchema(BaseModel):
 
     available: bool
     mine: bool
+    flag: bool
 
 
 class PickSlotSchema(BaseModel):

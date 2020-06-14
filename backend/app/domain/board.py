@@ -15,14 +15,18 @@ class Slot(BaseModel):
 
     x: int
     y: int
-    mine: bool
-    available: bool
+    mine: bool = False
+    available: bool = True
+    flag: bool = False
 
     def place_mine(self) -> None:
         self.mine = True
 
     def pick(self):
         self.available = False
+
+    def toggle_flag(self):
+        self.flag = not self.flag
 
 
 class Board(BaseModel):
@@ -52,7 +56,7 @@ class Board(BaseModel):
         for x in range(self.rows):
             row = []
             for y in range(self.cols):
-                slot = Slot(x=x, y=y, mine=False, available=True)
+                slot = Slot(x=x, y=y)
                 row.append(slot)
             slots.append(row)
         return slots
@@ -144,3 +148,10 @@ class Board(BaseModel):
                 adjacent_slots.append(slot)
 
         return adjacent_slots
+
+    def toggle_flag_slot(self, pick: PickSlotSchema) -> None:
+        """Flag a slot in the board"""
+        slot = self.slots[pick.x][pick.y]
+        if not slot.available:
+            raise SlotAlreadyPicked(pick)
+        slot.toggle_flag()

@@ -28,10 +28,15 @@ class Game(BaseModel):
         """Pick a slot in the board"""
         self.board.pick_slot(pick)
 
+    def toggle_flag_slot(self, pick):
+        """Flag a slot in the board"""
+        self.board.toggle_flag_slot(pick)
+
     @property
     def visual_board(self):
         """Return a visual representation of the board
         Symbols:
+            ! indicates the slot is flagged
             ~ indicates the slot is available and there is a mine behind it
             · indicates the slot is available and clear
             X indicates a picked mine (game over)
@@ -41,7 +46,9 @@ class Game(BaseModel):
         for i, row in enumerate(self.board.slots):
             line = f'{i} '
             for slot in row:
-                if slot.available and slot.mine:
+                if slot.flag:
+                    line += ' !'
+                elif slot.available and slot.mine:
                     line += ' ~'
                 elif slot.available and not slot.mine:
                     line += ' ·'

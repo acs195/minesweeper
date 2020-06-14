@@ -32,3 +32,16 @@ def pick_slot(
         return game
     except SlotAlreadyPicked as e:
         raise HTTPException(status_code=400, detail=e.args[0])
+
+
+@router.post("/{game_id}/toggle-flag-slot", response_model=GameSchema)
+def toggle_flag_slot(
+    game_id: str, pick: PickSlotSchema, repo: GameRepo = Depends()
+) -> GameSchema:
+    """Flag a slot"""
+    game = repo.get(id=game_id)
+    try:
+        game.toggle_flag_slot(pick)
+        return game
+    except SlotAlreadyPicked as e:
+        raise HTTPException(status_code=400, detail=e.args[0])

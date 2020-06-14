@@ -62,8 +62,36 @@ class MineSweeperClient {
     }
   }
 
+  async toggleFlagSlot(gameId, pick) {
+    // Flag a slot in the board
+    let options = {
+      method: "POST",
+      body: JSON.stringify(pick)
+    }
+    let response = await this.request("/games/" + gameId + "/toggle-flag-slot", options)
+    if (response.ok) {
+      this.game = await response.json()
+      if (this.debug) {
+        this.printBoard()
+      }
+      return this.game
+    } else {
+      let error = await response.json()
+      console.log(error)
+      return error
+    }
+  }
+
   printBoard() {
     // Print board in console
+    //
+    // Symbols:
+    // ! indicates the slot is flagged
+    // ~ indicates the slot is available and there is a mine behind it
+    // · indicates the slot is available and clear
+    // X indicates a picked mine (game over)
+    //   (empty) indicates the slot was already picked (no mine)
+    //
     console.log(' ')
     let header = '   ' + [...Array(this.game.board.slots[0].length).keys()].join(' ')
     console.log(header)
@@ -71,7 +99,9 @@ class MineSweeperClient {
       let row = i + ' '
       for (let j = 0; j < this.game.board.slots[i].length; j++) {
         let slot = this.game.board.slots[i][j]
-        if (slot.available && slot.mine) {
+        if (slot.flag) {
+          row += ' !'
+        } else if (slot.available && slot.mine) {
           row += ' ~'
         } else if (slot.available && !slot.mine) {
           row += ' ·'

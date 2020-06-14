@@ -336,9 +336,9 @@ module.exports = {
               flag: false
             },
             {
-              available: false,
+              available: true,
               mine: false,
-              flag: false
+              flag: true
             }
           ]
         ],
