@@ -1,7 +1,7 @@
 # minesweeper notes:
 - This is an exercise project
 - The backend API is coded in Python with FastApi micro-framework
-- The backend API is deployed to Google App Engine
+- The backend API is deployed to Google Cloud Run
 - The client API is coded in Node/Javascript
 - You will notice that I am more a Python developer than a Node/Javascript one :)
 

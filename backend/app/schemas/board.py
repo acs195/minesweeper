@@ -27,3 +27,21 @@ class BoardSchema(BaseModel):
     mines: int
     rows: int
     cols: int
+
+
+class BoardCreateSchema(BaseModel):
+    """This is the create schema"""
+
+    slots: List[List[dict]]
+    mines: int
+    rows: int
+    cols: int
+
+
+class BoardUpdateSchema(BaseModel):
+    """This is the update schema"""
+
+    slots: List[List[dict]]
+    mines: int
+    rows: int
+    cols: int

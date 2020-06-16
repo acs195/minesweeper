@@ -3,11 +3,14 @@
 import uvicorn
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
+from repos.db.database import Base, engine
 
 from api.api_v1.api import api_router
 from core.config import get_settings
 
 settings = get_settings()
+
+Base.metadata.create_all(bind=engine)
 
 
 def create_app() -> FastAPI:

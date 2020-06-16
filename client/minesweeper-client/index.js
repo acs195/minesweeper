@@ -5,7 +5,7 @@ let fetch = require("isomorphic-unfetch")
 class MineSweeperClient {
   // This is the API Client class for minesweeper
   constructor() {
-    this.basePath = process.env.BASE_URL || "https://cloudaleapi.ue.r.appspot.com/api/v1"
+    this.basePath = process.env.BASE_URL || "https://aleapi-bot26wz5ma-ue.a.run.app/api/v1"
     this.debug = parseInt(process.env.DEBUG || 0)
     this.game = null
   }

@@ -2,7 +2,7 @@
 
 from enum import Enum
 from functools import lru_cache
-from os import getenv
+from os import getenv, path, getcwd
 
 from pydantic import BaseSettings
 
@@ -29,6 +29,10 @@ class Settings(BaseSettings):
 
     # Logging
     LOG_LEVEL: str = getenv("LOG_LEVEL", "ERROR")
+
+    # DB
+    file_path = path.abspath(getcwd()) + "/minesweeper.db"
+    SQLALCHEMY_DATABASE_URI: str = f"sqlite:///{file_path}"
 
     class Config:
         case_sensitive = True

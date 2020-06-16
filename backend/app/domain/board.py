@@ -1,10 +1,9 @@
 """This is the domain model module for board"""
 
 from random import randrange
-from typing import List, Optional
-from uuid import uuid4
+from typing import List, Union
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel
 
 from schemas.board import PickSlotSchema
 from utils.exceptions import InvalidAmountOfMines, SlotAlreadyPicked
@@ -24,6 +23,8 @@ class Slot(BaseModel):
 
     def pick(self):
         self.available = False
+        if self.flag:
+            self.flag = False
 
     def toggle_flag(self):
         self.flag = not self.flag
@@ -32,34 +33,18 @@ class Slot(BaseModel):
 class Board(BaseModel):
     """This class represents a board"""
 
-    id: Optional[str]
+    id: str
     rows: int
     cols: int
-    slots: List[List[Slot]] = []
+    slots: List[List[Union[Slot]]] = [[]]
     mines: int = 0
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.slots = self._initiate_slots()
-
-    @validator("id", always=True)
-    def auto_generate_id(cls, v):
-        return v or str(uuid4())
+    class Config:
+        orm_mode = True
 
     def _max_mines(self) -> int:
         """Return the max number of mines to be placed in the board"""
         return self.rows * self.cols - 1
-
-    def _initiate_slots(self) -> list:
-        """Create an empty 2D array of slots (rows x cols)"""
-        slots = []
-        for x in range(self.rows):
-            row = []
-            for y in range(self.cols):
-                slot = Slot(x=x, y=y)
-                row.append(slot)
-            slots.append(row)
-        return slots
 
     def reset(self) -> None:
         self.slots = self._initiate_slots()

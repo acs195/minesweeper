@@ -1,5 +1,26 @@
 # Backend
 
+## DB migrations
+Initialize for first time:
+```
+alembic init alembic
+```
+
+Create a new revision:
+```
+alembic revision --autogenerate
+```
+
+Upgrade DB:
+```
+alembic upgrade head or tag
+```
+
+Downgrade DB:
+```
+alembic downgrade base or tag
+```
+
 ## Run app
 With Uvicorn:
 ```
@@ -20,12 +41,12 @@ pytest -v
 
 ---
 
-## Deploy to Google App Engine
+## Deploy to Google Cloud Run
 ```
-gcloud app deploy
+gcloud builds submit
 ```
 
-It is hosted on: https://cloudaleapi.ue.r.appspot.com
+It is hosted on: https://aleapi-bot26wz5ma-ue.a.run.app
 
 ### API Documentation
-https://cloudaleapi.ue.r.appspot.com/docs
+https://aleapi-bot26wz5ma-ue.a.run.app/docs

@@ -19,7 +19,7 @@ describe('Test class import', () => {
 describe('Test to start a new game', () => {
   beforeEach(() => {
     // Mock backend api response
-    nock('https://cloudaleapi.ue.r.appspot.com')
+    nock('https://aleapi-bot26wz5ma-ue.a.run.app')
       .post('/api/v1/games/start')
       .reply(200, gameStartResponse)
   })
@@ -44,7 +44,7 @@ describe('Test to start a new game', () => {
 describe('Test to pick a slot in the board', () => {
   beforeEach(() => {
     // Mock backend api response
-    nock('https://cloudaleapi.ue.r.appspot.com')
+    nock('https://aleapi-bot26wz5ma-ue.a.run.app')
       .post('/api/v1/games/4e6b3ce8-e3e1-4b6c-a304-a7677ec3005d/pick-slot')
       .reply(200, gamePickSlotResponse)
   })
@@ -60,7 +60,7 @@ describe('Test to pick a slot in the board', () => {
 describe('Test to flag a slot in the board', () => {
   beforeEach(() => {
     // Mock backend api response
-    nock('https://cloudaleapi.ue.r.appspot.com')
+    nock('https://aleapi-bot26wz5ma-ue.a.run.app')
       .post('/api/v1/games/4e6b3ce8-e3e1-4b6c-a304-a7677ec3005d/toggle-flag-slot')
       .reply(200, gameFlagSlotResponse)
   })

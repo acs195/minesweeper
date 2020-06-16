@@ -11,6 +11,12 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [0.6.0] - 2020-06-16
+### Added
+- Add DB persistence
+
+---
+
 ## [0.5.0] - 2020-06-14
 ### Added
 - Detect when game is over (loss and win)
