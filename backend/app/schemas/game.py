@@ -2,6 +2,7 @@
 
 
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -18,7 +19,7 @@ class GameSchema(BaseModel):
     player: PlayerSchema
     status: GameStatusEnum
     start_time: datetime
-    end_time: datetime
+    end_time: Optional[datetime]
 
 
 class GameCreateSchema(BaseModel):
@@ -28,7 +29,7 @@ class GameCreateSchema(BaseModel):
     player: PlayerSchema
     status: GameStatusEnum
     start_time: datetime
-    end_time: datetime
+    end_time: Optional[datetime]
 
 
 class GameUpdateSchema(BaseModel):
@@ -38,4 +39,4 @@ class GameUpdateSchema(BaseModel):
     player: PlayerSchema
     status: GameStatusEnum
     start_time: datetime
-    end_time: datetime
+    end_time: Optional[datetime]

@@ -14,8 +14,7 @@ settings = get_settings()
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-scheme, filename = settings.SQLALCHEMY_DATABASE_URI.split(":///")
-db_uri = f"{scheme}:///app/{filename}"
+db_uri = settings.SQLALCHEMY_DATABASE_URI
 
 config.set_main_option("sqlalchemy.url", db_uri)
 

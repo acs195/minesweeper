@@ -22,8 +22,8 @@ class FakeAppRepo:
 
     def add(self, item):
         if isinstance(item, dict):
-            if 'id' not in item:
-                item['id'] = str(uuid4())
+            if "id" not in item:
+                item["id"] = str(uuid4())
                 item = self.model(**item)
 
         new = {self.orm.__tablename__: {item.id: item}}
