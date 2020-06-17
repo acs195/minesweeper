@@ -101,7 +101,9 @@ class GameFactory:
         """Prepare the board and start the game"""
         board_payload = dict(rows=DEFAULT_BOARD_ROWS, cols=DEFAULT_BOARD_ROWS)
         initial_slots = self._get_initial_slots(**board_payload)
-        board_db = self.repo.boards.add({**board_payload, "slots": initial_slots})
+        board_db = self.repo.boards.add(
+            {**board_payload, "slots": initial_slots, "mines": 0}
+        )
         board = Board.from_orm(board_db)
 
         board.set_mines(mines=DEFAULT_MINES)
