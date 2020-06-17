@@ -11,6 +11,12 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [0.7.0] - 2020-06-17
+### Added
+- Add time tracking
+
+---
+
 ## [0.6.0] - 2020-06-16
 ### Added
 - Add DB persistence
