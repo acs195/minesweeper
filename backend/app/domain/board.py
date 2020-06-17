@@ -46,10 +46,6 @@ class Board(BaseModel):
         """Return the max number of mines to be placed in the board"""
         return self.rows * self.cols - 1
 
-    def reset(self) -> None:
-        self.slots = self._initiate_slots()
-        self.set_mines(self.mines)
-
     def set_mines(self, mines: int) -> None:
         """Place mines in the board to start a new game"""
         if mines > self._max_mines():

@@ -1,5 +1,8 @@
 from domain.board import Board, Slot
 from schemas.board import PickSlotSchema
+from domain.game import GameFactory
+
+from uuid import uuid4
 
 
 def test_new_slot():
@@ -14,17 +17,20 @@ def test_new_slot():
 def test_new_board():
     """Test to create a new board with slots initialized"""
     rows = cols = 8
-    board = Board(rows=rows, cols=cols)
+    board = Board(id=str(uuid4()), rows=rows, cols=cols)
     for row in board.slots:
         for slot in row:
             assert slot.available is True
             assert slot.mine is False
 
 
-def test_board_set_mines():
+def test_board_set_mines(fake_repo):
     """Test to set mines in a board"""
     rows = cols = mines = 8
-    board = Board(rows=rows, cols=cols)
+    game_factory = GameFactory(fake_repo)
+    board_payload = dict(rows=rows, cols=cols)
+    initial_slots = game_factory._get_initial_slots(**board_payload)
+    board = Board(id=str(uuid4()), slots=initial_slots, **board_payload)
     board.set_mines(mines)
     count_mines = 0
     for row in board.slots:

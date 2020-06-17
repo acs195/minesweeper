@@ -2,15 +2,13 @@ from pytest import raises
 
 from domain.board import Board
 from domain.game import GameFactory, GameStatusEnum
-from domain.player import AnonymousPlayer
 from schemas.board import PickSlotSchema
 from utils.exceptions import SlotAlreadyPicked, GameIsOver
 
 
-def test_new_game(fake_game_repo):
+def test_new_game(fake_repo, player):
     """Test to create a new game"""
-    player = AnonymousPlayer()
-    game_factory = GameFactory(fake_game_repo)
+    game_factory = GameFactory(fake_repo)
     new_game = game_factory.start(player)
     assert new_game.player == player
     assert isinstance(new_game.board, Board)

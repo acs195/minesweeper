@@ -1,8 +1,8 @@
 from main import app
-from repos.in_memory.game import GameRepo
-from tests.conftest import FakeGameRepo
+from repos.db import AppRepo
+from tests.fake_repo import FakeAppRepo
 
-app.dependency_overrides[GameRepo] = FakeGameRepo
+app.dependency_overrides[AppRepo] = FakeAppRepo
 
 
 def test_game_start(test_client):
@@ -34,7 +34,7 @@ def test_game_pick_slot_already_picked(test_client, game):
     slot = {"x": 1, "y": 1}
     response = test_client.post(f"/api/v1/games/{game.id}/pick-slot", json=slot)
     assert response.status_code == 400
-    assert response.json()["detail"] == f"Cannot pick slot {slot['x']}x{slot['y']}"
+    assert response.json()["detail"] == f"Slot {slot['x']}x{slot['y']} is not available"
 
 
 def test_game_toggle_flag_slot(test_client, game):

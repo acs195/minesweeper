@@ -4,38 +4,14 @@ from fastapi.testclient import TestClient
 from pytest import fixture
 
 from domain.game import GameFactory
-from domain.player import AnonymousPlayer
+from domain.player import PlayerManager
 from main import app
-
-
-class FakeRepo:
-    datastore = dict()
-
-    def get(self, model, id):
-        return self.datastore.get(model).get(id)
-
-    def add(self, model, item):
-        new = {model: {item.id: item}}
-        self.datastore.update(new)
-
-    def remove(self, model, item):
-        del self.datastore[model][item.id]
-
-
-class FakeGameRepo(FakeRepo):
-    def get(self, id):
-        return super().get("games", id)
-
-    def add(self, item):
-        super().add("games", item)
-
-    def remove(self, item):
-        super().remove("games", item)
+from tests.fake_repo import FakeAppRepo
 
 
 @fixture
-def fake_game_repo():
-    repo = FakeGameRepo()
+def fake_repo():
+    repo = FakeAppRepo()
     return repo
 
 
@@ -46,9 +22,14 @@ def test_client():
 
 
 @fixture
-def game(fake_game_repo):
-    player = AnonymousPlayer()
-    game_factory = GameFactory(fake_game_repo)
+def player(fake_repo):
+    player_manager = PlayerManager(fake_repo)
+    return player_manager.get_or_create()
+
+
+@fixture
+def game(fake_repo, player):
+    game_factory = GameFactory(fake_repo)
     game = game_factory.start(player)
 
     mines = [
