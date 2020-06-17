@@ -1,6 +1,7 @@
 // This is the minesweeper client module
 
 let fetch = require("isomorphic-unfetch")
+let moment = require("moment")
 
 class MineSweeperClient {
   // This is the API Client class for minesweeper
@@ -113,7 +114,43 @@ class MineSweeperClient {
       }
       console.log(row)
     }
+    console.log('Game status: ' + this.get_status())
+    console.log('Elapsed time: ' + this.get_timing())
     console.log(' ')
+  }
+
+  get_timing() {
+    // Get game time elapsed
+    let timeElapsed = null
+    if (!this.game) {
+      return 'N/A'
+    }
+    let start_time = new Date(this.game.start_time)
+    start_time.setTime(start_time.getTime() - (start_time.getTimezoneOffset() * 60 * 1000))
+    if (this.game.status == 2 || this.game.status == 3) {
+      let end_time = new Date(this.game.end_time)
+      end_time.setTime(end_time.getTime() - (end_time.getTimezoneOffset() * 60 * 1000))
+      return moment(start_time, "YYYY-MM-DD hh:mm:ss").fromNow(end_time, "YYYY-MM-DD hh:mm:ss")
+    } else {
+      let now = new Date()
+      now.setTime(now.getTime() - (now.getTimezoneOffset() * 60 * 1000))
+      return moment(start_time, "YYYY-MM-DD hh:mm:ss").fromNow(now, "YYYY-MM-DD hh:mm:ss")
+    }
+  }
+
+  get_status() {
+    // Get game status
+    if (!this.game) {
+      return 'No active game'
+    }
+    switch (this.game.status) {
+      case 1:
+        return 'in progress'
+      case 2:
+        return 'won!'
+      case 3:
+        return 'lost :('
+    }
   }
 }
 

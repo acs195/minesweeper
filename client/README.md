@@ -1,5 +1,10 @@
 # Client API
 
+## Install npm packages
+```
+npm install
+```
+
 ## Usage:
 ```
 let apiClientLib = require('./minesweeper-client/index')
