@@ -1,10 +1,13 @@
 """This is the module for API schemas for games"""
 
 
+from datetime import datetime
+
 from pydantic import BaseModel
+
+from domain.enums import GameStatusEnum
 from schemas.board import BoardSchema
 from schemas.player import PlayerSchema
-from domain.enums import GameStatusEnum
 
 
 class GameSchema(BaseModel):
@@ -14,6 +17,8 @@ class GameSchema(BaseModel):
     board: BoardSchema
     player: PlayerSchema
     status: GameStatusEnum
+    start_time: datetime
+    end_time: datetime
 
 
 class GameCreateSchema(BaseModel):
@@ -22,6 +27,8 @@ class GameCreateSchema(BaseModel):
     board: BoardSchema
     player: PlayerSchema
     status: GameStatusEnum
+    start_time: datetime
+    end_time: datetime
 
 
 class GameUpdateSchema(BaseModel):
@@ -30,3 +37,5 @@ class GameUpdateSchema(BaseModel):
     board: BoardSchema
     player: PlayerSchema
     status: GameStatusEnum
+    start_time: datetime
+    end_time: datetime

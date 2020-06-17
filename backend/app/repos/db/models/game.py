@@ -2,7 +2,7 @@
 
 from uuid import uuid4
 
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy_utils import ChoiceType
 
 from domain.enums import GameStatusEnum
@@ -18,6 +18,8 @@ class GameDB(Base):
     player_id = Column(String, ForeignKey("players.id"), nullable=False)
     board_id = Column(String, ForeignKey("boards.id"), nullable=False)
     status = Column(ChoiceType(GameStatusEnum, impl=Integer()))
+    start_time = Column(DateTime, nullable=False)
+    end_time = Column(DateTime, nullable=True)
 
     def __init__(self, *args, **kwargs):
         if not self.id:

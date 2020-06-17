@@ -1,11 +1,14 @@
 """This is the domain model module for game"""
 
+from datetime import datetime
+from typing import Optional
+
 from pydantic import BaseModel
 
 from domain.board import Board, Slot
 from domain.enums import GameStatusEnum
 from domain.player import Player
-from utils.exceptions import GameIsOver, PickOutOrBoard, GameNotFound
+from utils.exceptions import GameIsOver, GameNotFound, PickOutOrBoard
 
 DEFAULT_MINES = 8
 DEFAULT_BOARD_ROWS = 8
@@ -19,6 +22,8 @@ class Game(BaseModel):
     player: Player
     board: Board
     status: GameStatusEnum
+    start_time: datetime
+    end_time: Optional[datetime]
 
     class Config:
         orm_mode = True
@@ -31,6 +36,7 @@ class Game(BaseModel):
         slot = self.board.pick_slot(pick)
         if slot.mine:
             self.status = GameStatusEnum.lost
+            self.end_time = datetime.utcnow()
         else:
             self._check_for_win()
 
@@ -89,6 +95,7 @@ class Game(BaseModel):
         )
         if not slots_available:
             self.status = GameStatusEnum.won
+            self.end_time = datetime.utcnow()
 
 
 class GameFactory:
@@ -108,7 +115,10 @@ class GameFactory:
         board_db = self.repo.boards.update(board_db, board)
 
         game_payload = dict(
-            player_id=player.id, board_id=board.id, status=GameStatusEnum.ongoing
+            player_id=player.id,
+            board_id=board.id,
+            status=GameStatusEnum.ongoing,
+            start_time=datetime.utcnow(),
         )
         game_db = self.repo.games.add(game_payload)
         game = Game.from_orm(game_db)
