@@ -4,13 +4,6 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [unreleased] - YYYY-MM-DD
-### Added
-### Changed
-### Removed
-
----
-
 ## [0.9.0] - 2020-06-17
 ### Added
 - Add ability to select parameters such as rows, cols and mines
