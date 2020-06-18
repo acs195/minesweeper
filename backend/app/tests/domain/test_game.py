@@ -16,7 +16,7 @@ def test_new_game(fake_repo, player):
 
 def test_game_pick_slot(game):
     """Test to pick a slot during the game"""
-    x, y = 2, 3
+    x, y = 3, 0
     pick = PickSlotSchema(x=x, y=y)
     picked_slot = game.board.slots[x][y]
 

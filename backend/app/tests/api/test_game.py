@@ -44,3 +44,42 @@ def test_game_toggle_flag_slot(test_client, game):
     assert response.status_code == 200
     game = response.json()
     assert game["board"]["slots"][slot["x"]][slot["y"]]["flag"] is True
+
+
+def test_game_start_with_params(test_client):
+    """Test the api to start a new game"""
+    params = {
+        "rows": 7,
+        "cols": 9,
+        "mines": 12,
+    }
+    response = test_client.post("/api/v1/games/start", json=params)
+    assert response.status_code == 200
+    game = response.json()
+    assert game["board"]["cols"] == params["cols"]
+    assert game["board"]["rows"] == params["rows"]
+    assert game["board"]["mines"] == params["mines"]
+
+
+def test_game_start_with_too_many_mines(test_client):
+    """Test the api to start a new game"""
+    params = {
+        "rows": 7,
+        "cols": 9,
+        "mines": 1233,
+    }
+    response = test_client.post("/api/v1/games/start", json=params)
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Too many mines"
+
+
+def test_game_start_with_invalid_rows(test_client):
+    """Test the api to start a new game"""
+    params = {
+        "rows": 0,
+        "cols": 9,
+        "mines": 4,
+    }
+    response = test_client.post("/api/v1/games/start", json=params)
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Number of rows must be a positive integer"

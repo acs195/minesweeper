@@ -22,6 +22,14 @@ class GameSchema(BaseModel):
     end_time: Optional[datetime]
 
 
+class GameParamsSchema(BaseModel):
+    """This is the start game schema"""
+
+    rows: int
+    cols: int
+    mines: int
+
+
 class GameCreateSchema(BaseModel):
     """This is the create schema"""
 

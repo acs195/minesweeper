@@ -57,3 +57,9 @@ class PlayerNotFound(ResourceNotFound):
     def __init__(self, id):
         message = f"Player {id} is not found"
         super().__init__(message)
+
+
+class InvalidGameParameters(ValueError):
+    """Exception for invalid game parameter"""
+
+    pass

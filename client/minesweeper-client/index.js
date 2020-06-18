@@ -3,6 +3,12 @@
 let fetch = require("isomorphic-unfetch")
 let moment = require("moment")
 
+const GameStatus = {
+  'ongoing': 1,
+  'won': 2,
+  'lost': 3
+}
+
 class MineSweeperClient {
   // This is the API Client class for minesweeper
   constructor() {
@@ -25,10 +31,20 @@ class MineSweeperClient {
     }
 
   }
-  async startNewGame() {
-    // Start a new game
+  async startNewGame(gameParameters) {
+    /* Start a new game
+    
+    Parameters:
+      gameParameters:
+        - rows: integer
+        - cols: integer
+        - mines: interger
+    */
     let url = "/games/start"
-    let options = { method: "POST" }
+    let options = {
+      method: "POST",
+      body: JSON.stringify(gameParameters)
+    }
     let response = await this.request(url, options)
     if (response.ok) {
       this.game = await response.json()
@@ -44,7 +60,14 @@ class MineSweeperClient {
   }
 
   async pickSlot(gameId, pick) {
-    // Pick a slot in the board
+    /* Pick a slot in the board
+    
+    Parameters:
+      gameId: string
+      pick:
+        - x: integer
+        - y: integer
+    */
     let options = {
       method: "POST",
       body: JSON.stringify(pick)
@@ -64,7 +87,14 @@ class MineSweeperClient {
   }
 
   async toggleFlagSlot(gameId, pick) {
-    // Flag a slot in the board
+    /* Flag a slot in the board
+    
+    Parameters:
+      gameId: string
+      pick:
+        - x: integer
+        - y: integer
+    */
     let options = {
       method: "POST",
       body: JSON.stringify(pick)
@@ -84,15 +114,15 @@ class MineSweeperClient {
   }
 
   printBoard() {
-    // Print board in console
-    //
-    // Symbols:
-    // ! indicates the slot is flagged
-    // ~ indicates the slot is available and there is a mine behind it
-    // · indicates the slot is available and clear
-    // X indicates a picked mine (game over)
-    //   (empty) indicates the slot was already picked (no mine)
-    //
+    /* Print board in console
+    
+    Symbols:
+      ! indicates the slot is flagged
+      ~ indicates the slot is available and there is a mine behind it
+      · indicates the slot is available and clear
+      X indicates a picked mine (game over)
+        (empty) indicates the slot was already picked (no mine)
+    */
     console.log(' ')
     let header = '   ' + [...Array(this.game.board.slots[0].length).keys()].join(' ')
     console.log(header)
@@ -127,7 +157,7 @@ class MineSweeperClient {
     }
     let start_time = new Date(this.game.start_time)
     start_time.setTime(start_time.getTime() - (start_time.getTimezoneOffset() * 60 * 1000))
-    if (this.game.status == 2 || this.game.status == 3) {
+    if (this.game.status == GameStatus.won || this.game.status == GameStatus.lost) {
       let end_time = new Date(this.game.end_time)
       end_time.setTime(end_time.getTime() - (end_time.getTimezoneOffset() * 60 * 1000))
       return moment(start_time, "YYYY-MM-DD hh:mm:ss").fromNow(end_time, "YYYY-MM-DD hh:mm:ss")
@@ -144,11 +174,11 @@ class MineSweeperClient {
       return 'No active game'
     }
     switch (this.game.status) {
-      case 1:
+      case GameStatus.ongoing:
         return 'in progress'
-      case 2:
+      case GameStatus.won:
         return 'won!'
-      case 3:
+      case GameStatus.lost:
         return 'lost :('
     }
   }

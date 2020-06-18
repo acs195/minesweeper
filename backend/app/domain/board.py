@@ -106,27 +106,27 @@ class Board(BaseModel):
             if slot.available:
                 adjacent_slots.append(slot)
         # North-East
-        if pick.x + 1 < self.cols and pick.y - 1 >= 0:
+        if pick.x + 1 < self.rows and pick.y - 1 >= 0:
             slot = self.slots[pick.x + 1][pick.y - 1]
             if slot.available:
                 adjacent_slots.append(slot)
         # East
-        if pick.x + 1 < self.cols:
+        if pick.x + 1 < self.rows:
             slot = self.slots[pick.x + 1][pick.y]
             if slot.available:
                 adjacent_slots.append(slot)
         # South-East
-        if pick.x + 1 < self.cols and pick.y + 1 < self.rows:
+        if pick.x + 1 < self.rows and pick.y + 1 < self.cols:
             slot = self.slots[pick.x + 1][pick.y + 1]
             if slot.available:
                 adjacent_slots.append(slot)
         # South
-        if pick.y + 1 < self.rows:
+        if pick.y + 1 < self.cols:
             slot = self.slots[pick.x][pick.y + 1]
             if slot.available:
                 adjacent_slots.append(slot)
         # South-West
-        if pick.x - 1 >= 0 and pick.y + 1 < self.rows:
+        if pick.x - 1 >= 0 and pick.y + 1 < self.cols:
             slot = self.slots[pick.x - 1][pick.y + 1]
             if slot.available:
                 adjacent_slots.append(slot)

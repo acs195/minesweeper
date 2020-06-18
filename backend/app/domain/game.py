@@ -8,7 +8,13 @@ from pydantic import BaseModel
 from domain.board import Board, Slot
 from domain.enums import GameStatusEnum
 from domain.player import Player
-from utils.exceptions import GameIsOver, GameNotFound, PickOutOrBoard
+from schemas.game import GameParamsSchema
+from utils.exceptions import (
+    GameIsOver,
+    GameNotFound,
+    PickOutOrBoard,
+    InvalidGameParameters,
+)
 
 DEFAULT_MINES = 8
 DEFAULT_BOARD_ROWS = 8
@@ -101,19 +107,24 @@ class Game(BaseModel):
 class GameFactory:
     """This class is used to instanciate a game"""
 
-    def __init__(self, repo):
+    def __init__(self, repo, game_params: GameParamsSchema = None):
         self.repo = repo
+        self.cols = game_params.cols if game_params else DEFAULT_BOARD_COLS
+        self.rows = game_params.rows if game_params else DEFAULT_BOARD_ROWS
+        self.mines = game_params.mines if game_params else DEFAULT_MINES
+        self._validate_input()
 
     def start(self, player: Player) -> Game:
         """Prepare the board and start the game"""
-        board_payload = dict(rows=DEFAULT_BOARD_ROWS, cols=DEFAULT_BOARD_ROWS)
+
+        board_payload = dict(rows=self.rows, cols=self.cols)
         initial_slots = self._get_initial_slots(**board_payload)
         board_db = self.repo.boards.add(
             {**board_payload, "slots": initial_slots, "mines": 0}
         )
         board = Board.from_orm(board_db)
 
-        board.set_mines(mines=DEFAULT_MINES)
+        board.set_mines(mines=self.mines)
         board_db = self.repo.boards.update(board_db, board)
 
         game_payload = dict(
@@ -136,6 +147,16 @@ class GameFactory:
                 row.append(slot)
             slots.append(row)
         return slots
+
+    def _validate_input(self):
+        if self.mines <= 0:
+            raise InvalidGameParameters("Number of mines must be a positive integer")
+        if self.rows <= 0:
+            raise InvalidGameParameters("Number of rows must be a positive integer")
+        if self.cols <= 0:
+            raise InvalidGameParameters("Number of cols must be a positive integer")
+        if self.mines >= self.rows * self.cols:
+            raise InvalidGameParameters("Too many mines")
 
 
 class PickSlot:
